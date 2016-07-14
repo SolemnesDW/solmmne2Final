@@ -1,0 +1,129 @@
+{% load staticfiles %}
+{% load thumbnail %}
+<div class="row">
+    <div class="col-md-12">
+        {% thumbnail categoria.banner "1700x300" crop="center" as im %}
+            <img id="item-display" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-responsive" alt="{{categoria.nombre}}" >
+        {% endthumbnail %}
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li class="active">{{categoria.nombre}}</li>
+    </ol>
+  </div>
+</div>
+      <!-- Example row of columns -->
+<div class="row">
+    <div class="col-xs-12 col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Filtros</div>
+          <div class="panel-body">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="">
+                Hombre
+              </label>
+              <br>
+              <label>
+                <input type="checkbox" value="">
+                Mujer
+              </label>
+              <br>             
+              <label>
+                <input type="checkbox" value="">
+                Niños
+              </label>
+              <br>
+              <label>
+                <input type="checkbox" value="">
+                Niñas
+              </label>
+              <br><br>
+              
+            </div>
+            <a href="#" class="btn btn-default pull-right">Filtrar</a>
+          </div>
+        </div>
+
+    </div>
+        <div class="col-xs-12 col-md-9">
+            <div class="row">
+                {% for producto in productos %}
+                <div class="col-xs-6 col-sm-4">
+                    <div class="col-item">
+                        <div class="photo">
+                            {% thumbnail producto.imagen_producto "350x260" crop="center" as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-responsive" alt="{{producto.nombre}}" >
+                            {% endthumbnail %}                          
+                        </div>
+                        <div class="info">
+                            <div class="row">
+                                <div class="price col-md-6">
+                                    <h5>{{producto.nombre}}</h5>
+                                    <h5 class="price-text-color">$ {{producto.precio}}</h5>
+                                </div>
+                                <div class="rating hidden-xs hidden-sm col-md-6">
+                                {% if producto.clasificacion == 0 %}
+                                {% elif producto.clasificacion == 1 %}
+                                    <i class="price-text-color fa fa-star"></i>
+                                {% elif producto.clasificacion == 2 %}
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+
+                                {% elif producto.clasificacion == 3 %}
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                {% elif producto.clasificacion == 4 %}    
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                {% elif producto.clasificacion == 5 %}
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                    <i class="price-text-color fa fa-star"></i>
+                                {% endif %}
+                                </div>
+                            </div>
+                            <div class="separator clear-left">
+                                <p class="btn-add">
+                                    <i class="fa fa-shopping-cart"></i><a href="#" class="hidden-sm">Agregar</a></p>
+                                <p class="btn-details">
+                                    <a href="{% url 'detalle_producto' producto.pk %}" ><i class="fa fa-list"></i></a><a href="{% url 'detalle_producto' producto.pk %}" class="hidden-xs hidden-sm">Detalle</a></p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>  
+                {% endfor %}
+            </div>
+
+        </div>
+</div>
+
+
+
+{% if productos %}
+<div class="container text-center">
+    <div class="pagination">
+      <ul class="pagination">
+          {% if productos.has_previous %}
+              <li><a href="?page={{ productos.previous_page_number }}"> << <span class="sr-only">(current)</span></a></li>
+          {% endif %}
+                <li class="active"><a href="?page={{ pg }}">{{ productos.number }}</a></li>
+                <li><a href="#">de</a></li>
+                <li><a href="?page={{ pg }}">{{ productos.paginator.num_pages }}</a></li>
+          
+          {% if products.has_next %}
+              <li><a href="?page={{ productos.next_page_number }}"> >> </a></li>
+          {% endif %}
+      </ul>
+    </div>
+</div>
+{% endif %}
